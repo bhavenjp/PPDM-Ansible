@@ -1,0 +1,146 @@
+root@rest-01:~/bh-code# cat ppdm-create-user_v3.yaml
+- name: PPDM Login, Get Users, Create a User, Get Users
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  vars_prompt:
+    - name: fqdn
+      prompt: Enter PPDM FQDN
+      private: no
+    - name: user
+      prompt: Enter PPDM User
+      private: no
+    - name: password
+      prompt: Enter Password for this user
+      private: yes
+    - name: newuser
+      prompt: Enter Username for the new user
+      private: no
+    - name: newpassword
+      prompt: Enter Password for this new user
+      private: yes
+    - name: newemail
+      prompt: Enter Email address of this new user
+      private: no
+
+  vars:
+    URI: https://{{ fqdn }}:8443/api/v2
+
+  tasks:
+  - name: Authenticate to API and retrieve authentication token
+    uri:
+      method: POST
+      validate_certs: no
+      return_content: yes
+      url: "{{ URI }}/login"
+      body_format: json
+      body:
+        username: "{{ user }}"
+        password: "{{ password }}"
+    register: token
+
+  - name: Get Users - Before
+    uri:
+      method: GET
+      validate_certs: no
+      return_content: yes
+      headers:
+        Authorization: "Bearer {{ token.json.access_token }}"
+      url: "{{ URI }}/users"
+    register: users
+
+  - name: Print Users - Before
+    debug: msg="{{ users.json | json_query(jmesquery)}}"
+    vars:
+      jmesquery: "content[*].username"
+
+  - name: Create a User
+    uri:
+      method: POST
+      status_code: 201
+      validate_certs: no
+      return_content: yes
+      headers:
+        Authorization: "Bearer {{ token.json.access_token }}"
+      url: "{{ URI }}/users"
+      body_format: json
+      body:
+        firstName: "Roger"
+        emailAddress: "{{ newemail }}"
+        forcePasswordChange: false
+        lastName: "Federer"
+        password: "{{ newpassword }}"
+        roleId: "2bc90020-7675-0136-29e9-5bbd3ce729b0"
+        username: "{{ newuser }}"
+
+  - name: Get Users - After
+    uri:
+      method: GET
+      validate_certs: no
+      return_content: yes
+      headers:
+        Authorization: "Bearer {{ token.json.access_token }}"
+      url: "{{ URI }}/users"
+    register: users
+
+  - name: Print Users - After
+    debug: msg="{{ users.json | json_query(jmesquery)}}"
+    vars:
+      jmesquery: "content[*].username"
+
+
+root@rest-01:~/bh-code#
+
+
+
+
+
+
+
+
+
+
+root@rest-01:~/bh-code#
+root@rest-01:~/bh-code# ansible-playbook ppdm-create-user_v3.yaml
+Enter PPDM FQDN: ppdm-01.demo.local
+Enter PPDM User: admin
+Enter Password for this user:
+Enter Username for the new user: roger
+Enter Password for this new user:
+Enter Email address of this new user: roger@gmail.com
+
+PLAY [PPDM Login, Get Users, Create a User, Get Users] ************************************************************************************************
+
+TASK [Authenticate to API and retrieve authentication token] ******************************************************************************************
+ok: [localhost]
+
+TASK [Get Users - Before] *****************************************************************************************************************************
+ok: [localhost]
+
+TASK [Print Users - Before] ***************************************************************************************************************************
+ok: [localhost] => {
+    "msg": [
+        "admin",
+        "bhaven"
+    ]
+}
+
+TASK [Create a User] **********************************************************************************************************************************
+ok: [localhost]
+
+TASK [Get Users - After] ******************************************************************************************************************************
+ok: [localhost]
+
+TASK [Print Users - After] ****************************************************************************************************************************
+ok: [localhost] => {
+    "msg": [
+        "admin",
+        "bhaven",
+        "roger"
+    ]
+}
+
+PLAY RECAP ********************************************************************************************************************************************
+localhost                  : ok=6    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@rest-01:~/bh-code#

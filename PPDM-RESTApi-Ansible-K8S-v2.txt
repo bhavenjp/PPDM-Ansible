@@ -1,0 +1,90 @@
+root@rest-01:~/bh-code# cat ppdm-Backup-K8S_v2.yaml
+- name: Perform Adhoc Backup of a ProtectionPolicy
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  vars_prompt:
+    - name: fqdn
+      prompt: Enter PPDM FQDN
+      private: no
+    - name: user
+      prompt: Enter PPDM User
+      private: no
+    - name: password
+      prompt: Enter Password for this user
+      private: yes
+    - name: plcname
+      prompt: Choose the name of ProtectionPolicy to run (k8sbackup|FSBackup)
+      private: no
+
+  vars:
+    URI: https://{{ fqdn }}:8443/api/v2
+
+  tasks:
+  - name: Authenticate to API and retrieve authentication token
+    uri:
+      method: POST
+      validate_certs: no
+      return_content: yes
+      url: "{{ URI }}/login"
+      body_format: json
+      body:
+        username: "{{ user }}"
+        password: "{{ password }}"
+    register: token
+
+  - name: Get the ID for the given ProtectionPolicy
+    uri:
+      method: GET
+      validate_certs: no
+      return_content: yes
+      headers:
+        Authorization: "Bearer {{ token.json.access_token }}"
+      url: "{{ URI }}/protection-policies?filter=name%20eq%20%22{{ plcname }}%22"
+    register: plc
+
+  - name: Format the ID
+    set_fact:
+      plcid: "{{ plc.json.content[0].id }}"
+
+  - name: Run the ProtectionPolicy using the ID
+    uri:
+      method: POST
+      status_code: 204
+      validate_certs: no
+      return_content: yes
+      headers:
+        Authorization: "Bearer {{ token.json.access_token }}"
+      url: "{{ URI }}/protection-policies/{{ plcid }}/backups"
+      body_format: json
+      body:
+        assetIds: null
+        backupType: "FULL"
+        retention:
+          interval: "1"
+          unit: "YEAR"
+        disableProtectionPolicyProcessing: "false"
+    register: plc
+
+  - pause: seconds=5
+
+  - name: Get Activities
+    uri:
+      method: GET
+      validate_certs: no
+      return_content: yes
+      headers:
+        Authorization: "Bearer {{ token.json.access_token }}"
+      url: "{{ URI }}/activities?filter=protectionPolicy.name%20eq%20%22{{ plcname }}%22%20and%20category%20eq%20%22PROTECT%22%20and%20classType%20eq%20%22JOB%22"
+    register: act
+
+  - name: Format info
+    set_fact:
+      name: "{{ act.json | json_query(\"content[*].name\") }}"
+      state: "{{ act.json | json_query(\"content[*].progress\") }}"
+
+  - name: Print Backup Activities and Progress Percentage
+    debug:
+      msg: "{{ dict(name | zip(state)) }}"
+
+root@rest-01:~/bh-code#

@@ -1,0 +1,424 @@
+
+[root@LINUX-01 ~]# curl -X POST 'https://ppdm-01.demo.local:8443/api/v2/login' --header 'Content-Type: application/json' --header 'Accept: application/json' --data '{"username":"admin","password":"Password123!"}' -k
+{"access_token":"eyJraWQiOiJmNDdhM2U5Zi1hMzg1LTQ2OTQtYThlMi0zOTlkY2QzYTBjMWYiLCJhbGciOiJFUzI1NiJ9.eyJqdGkiOiJhZGYzN2VkYi0xNzc2LTRjZmItODI2NC0wMzU2YTUxZGExMTAiLCJpc3MiOiJlQ0RNIEFBQSBTZXJ2aWNlIiwiaWF0IjoxNjE4MTk3ODY4LCJleHAiOjE2MTgyMjY2NjgsImV4dCI6eyJzeXN0ZW0iOnsicm9sZSI6WyJBZG1pbiJdfSwiYXVkaXQiOnsidWlkIjoiMDAwMDAwMDAtMDAwMC00MDAwLWEwMDAtMDAwMDAwMDAwMDAwIn19LCJzdWIiOiJhZG1pbiIsImF1dGhvcml6YXRpb24tdG9rZW4tYml0bWFwIjp7InVzZXJuYW1lIjoiYWRtaW4iLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpZCI6IjAwMDAwMDAwLTAwMDAtNDAwMC1hMDAwLTAwMDAwMDAwMDAwMCIsInVzZXJUeXBlIjoiTE9DQUwiLCJ0aW1lc3RhbXAiOjAsImNyZWF0aW9uVGltZSI6MCwidGVuYW50U2NvcGUiOiIvMDAwMDAwMDAtMDAwMC00MDAwLWIwMDAtMDAwMDAwMDAwMDAwLzAwMDAwMDAwLTAwMDAtNDAwMC1hMDAwLTAwMDAwMDAwMDAwMCIsImF1dGhvcml0aWVzIjpbeyJ0ZW5hbnRzIjpbIjAwMDAwMDAwLTAwMDAtNDAwMC1iMDAwLTAwMDAwMDAwMDAwMCJdLCJwcml2aWxlZ2VzIjpbIjE3MTc5ODY5MTgzIl0sInJvbGVzIjpbIjJiYzkwMDIwLTc2NzUtMDEzNi0yOWU5LTViYmQzY2U3MjliMCJdfV19LCJydGkiOiJkZjdhMDdjMS03ZGQzLTQzZTUtYjA5Ny02MGIwYzJlNmQ3ZWEifQ.5zg0WuIg9l0hZa-kPqn-g5fSe12-2nSIcU4lpPnrUyBFplPON9kHE35VTCH29MJSO46-VXqYQzYghT6dF7Sc4w","token_type":"Bearer","expires_in":28800,"jti":"adf37edb-1776-4cfb-8264-0356a51da110","scope":"aaa","refresh_token":"eyJraWQiOiJmNDdhM2U5Zi1hMzg1LTQ2OTQtYThlMi0zOTlkY2QzYTBjMWYiLCJhbGciOiJFUzI1NiJ9.eyJqdGkiOiJkZjdhMDdjMS03ZGQzLTQzZTUtYjA5Ny02MGIwYzJlNmQ3ZWEiLCJpc3MiOiJlQ0RNIEFBQSBTZXJ2aWNlIiwiaWF0IjoxNjE4MTk3ODY4LCJleHAiOjE2MTgyODQyNjgsInN1YiI6ImFkbWluIiwiYXVkIjoiYWFhLnRva2VuLnJlZnJlc2gifQ.AJ2jTSYPRaHtPi5xOzSMh7tXpvBopDC96FeW156y7jEUoRhSxW8cChz0UdEuhaVf_y_7538K4uGsvYFB2QGeUQ"}
+
+
+
+
+[root@LINUX-01 ~]# curl -X GET https://ppdm-01.demo.local:8443/api/v2/storage-systems -H 'authorization: Bearer eyJraWQiOiJmNDdhM2U5Zi1hMzg1LTQ2OTQtYThlMi0zOTlkY2QzYTBjMWYiLCJhbGciOiJFUzI1NiJ9.eyJqdGkiOiJhZGYzN2VkYi0xNzc2LTRjZmItODI2NC0wMzU2YTUxZGExMTAiLCJpc3MiOiJlQ0RNIEFBQSBTZXJ2aWNlIiwiaWF0IjoxNjE4MTk3ODY4LCJleHAiOjE2MTgyMjY2NjgsImV4dCI6eyJzeXN0ZW0iOnsicm9sZSI6WyJBZG1pbiJdfSwiYXVkaXQiOnsidWlkIjoiMDAwMDAwMDAtMDAwMC00MDAwLWEwMDAtMDAwMDAwMDAwMDAwIn19LCJzdWIiOiJhZG1pbiIsImF1dGhvcml6YXRpb24tdG9rZW4tYml0bWFwIjp7InVzZXJuYW1lIjoiYWRtaW4iLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpZCI6IjAwMDAwMDAwLTAwMDAtNDAwMC1hMDAwLTAwMDAwMDAwMDAwMCIsInVzZXJUeXBlIjoiTE9DQUwiLCJ0aW1lc3RhbXAiOjAsImNyZWF0aW9uVGltZSI6MCwidGVuYW50U2NvcGUiOiIvMDAwMDAwMDAtMDAwMC00MDAwLWIwMDAtMDAwMDAwMDAwMDAwLzAwMDAwMDAwLTAwMDAtNDAwMC1hMDAwLTAwMDAwMDAwMDAwMCIsImF1dGhvcml0aWVzIjpbeyJ0ZW5hbnRzIjpbIjAwMDAwMDAwLTAwMDAtNDAwMC1iMDAwLTAwMDAwMDAwMDAwMCJdLCJwcml2aWxlZ2VzIjpbIjE3MTc5ODY5MTgzIl0sInJvbGVzIjpbIjJiYzkwMDIwLTc2NzUtMDEzNi0yOWU5LTViYmQzY2U3MjliMCJdfV19LCJydGkiOiJkZjdhMDdjMS03ZGQzLTQzZTUtYjA5Ny02MGIwYzJlNmQ3ZWEifQ.5zg0WuIg9l0hZa-kPqn-g5fSe12-2nSIcU4lpPnrUyBFplPON9kHE35VTCH29MJSO46-VXqYQzYghT6dF7Sc4w' -k
+{
+  "page" : {
+    "size" : 3,
+    "number" : 1,
+    "totalPages" : 1,
+    "totalElements" : 3
+  },
+  "content" : [ {
+    "id" : "80447446-f1ac-11ea-adc1-0242ac120002",
+    "name" : "GENERIC ARRAY",
+    "type" : "GENERICNASAPPLIANCE",
+    "local" : false,
+    "locationId" : null,
+    "ddLocationId" : null,
+    "capacityUtilization" : 0.0,
+    "lastDiscoveryStatus" : "NEW",
+    "lastDiscovered" : "2020-09-09T07:14:08.488Z",
+    "details" : {
+      "vmax" : null,
+      "xio" : null,
+      "recoverPoint" : null,
+      "dataDomain" : null
+    },
+    "createdAt" : "2020-09-09T07:14:08.546Z",
+    "updatedAt" : "2020-09-09T07:14:08.546Z",
+    "lastDiscoveryAt" : null,
+    "lastDiscoveryResult" : {
+      "status" : "UNKNOWN",
+      "summaries" : [ ]
+    },
+    "lastDiscoveryTaskId" : null,
+    "operatingSystem" : {
+      "name" : "GENERIC ARRAY OS",
+      "version" : "UNKNOWN"
+    },
+    "_links" : {
+      "self" : {
+        "href" : "https://ppdm-01.demo.local:8443/api/v2/storage-systems/80447446-f1ac-11ea-adc1-0242ac120002"
+      }
+    }
+  }, {
+    "id" : "6ea58c49-b701-45af-b991-153200942d40",
+    "name" : "ddve-01.demo.local",
+    "type" : "DATA_DOMAIN_SYSTEM",
+    "local" : false,
+    "locationId" : null,
+    "ddLocationId" : null,
+    "capacityUtilization" : 1.3232514177693762,
+    "lastDiscoveryStatus" : "DETECTED",
+    "lastDiscovered" : "2021-04-12T02:50:43.151Z",
+    "details" : {
+      "vmax" : null,
+      "xio" : null,
+      "recoverPoint" : null,
+      "dataDomain" : {
+        "version" : "7.0.0.1-633583",
+        "totalUsed" : 1.684537344E9,
+        "compressionFactor" : 1.912271,
+        "model" : "DD VE Version 4.0",
+        "replicationEncryptionEnabled" : false,
+        "serialNumber" : "AUDVYNLCXPSDXE",
+        "ddboostLicensed" : true,
+        "encryptionLicensed" : true,
+        "retentionLockComplianceLicensed" : true,
+        "cloudTierLicensed" : true,
+        "replicationLicensed" : true,
+        "retentionLockGovernanceLicensed" : true,
+        "cloudEnabled" : false,
+        "vdiskEnabled" : false,
+        "preferredNetworkSupported" : true,
+        "streamQuotasSupported" : true,
+        "capacityQuotasSupported" : true,
+        "retentionLockSupported" : true,
+        "preferredInterfaces" : [ {
+          "networkName" : "ethV0",
+          "networkAddress" : "192.168.1.30",
+          "speed" : 1.0E10
+        } ],
+        "percentUsed" : 1.3232514177693762,
+        "totalSize" : 1.27302893568E11
+      }
+    },
+    "createdAt" : "2020-07-17T05:46:26.303Z",
+    "updatedAt" : "2021-04-12T02:50:50.662Z",
+    "_embedded" : {
+      "inventorySource" : {
+        "id" : "d64a6454-123e-43f9-b4a3-dfb260e4abc0",
+        "name" : "ddve-01.demo.local",
+        "_links" : {
+          "self" : {
+            "href" : "https://ppdm-01.demo.local:8443/api/v2/inventory-sources/d64a6454-123e-43f9-b4a3-dfb260e4abc0"
+          }
+        }
+      }
+    },
+    "lastDiscoveryAt" : "2021-04-12T02:50:49.294Z",
+    "lastDiscoveryResult" : {
+      "status" : "OK",
+      "summaries" : [ "Discovery Type: EXTERNALDATADOMAIN  Resource Type: none  Sub-Type: DATADOMAINSYSTEM  Total Assets: 1  New Assets: 0", "Discovery Type: EXTERNALDATADOMAIN  Resource Type: TARGETVOLUME  Sub-Type: DDVDISKDEVICE  Total Assets: 0  New Assets: 0", "Discovery Type: EXTERNALDATADOMAIN  Resource Type: GROUP  Sub-Type: DDVDISKPOOL  Total Assets: 0  New Assets: 0", "Discovery Type: EXTERNALDATADOMAIN  Resource Type: GROUP  Sub-Type: DDVDISKDEVICEGROUP  Total Assets: 0  New Assets: 0", "Discovery Type: EXTERNALDATADOMAIN  Resource Type: GROUP  Sub-Type: DDMTREE  Total Assets: 0  New Assets: 0", "Discovery Type: EXTERNALDATADOMAIN  Resource Type: DATACOPY  Sub-Type: DDSTATICIMAGE  Total Assets: 0  New Assets: 0" ]
+    },
+    "lastDiscoveryTaskId" : "761a14c9-58f7-413c-b50c-4d530f0a3487",
+    "operatingSystem" : null,
+    "_links" : {
+      "self" : {
+        "href" : "https://ppdm-01.demo.local:8443/api/v2/storage-systems/6ea58c49-b701-45af-b991-153200942d40"
+      },
+      "inventorySource" : {
+        "href" : "https://ppdm-01.demo.local:8443/api/v2/inventory-sources/d64a6454-123e-43f9-b4a3-dfb260e4abc0"
+      }
+    }
+  }, {
+    "id" : "948d07e1-a4b3-42af-951e-fa6e7a43afd8",
+    "name" : "ddve-02.demo.local",
+    "type" : "DATA_DOMAIN_SYSTEM",
+    "local" : false,
+    "locationId" : null,
+    "ddLocationId" : null,
+    "capacityUtilization" : 0.8380196273017974,
+    "lastDiscoveryStatus" : "DETECTED",
+    "lastDiscovered" : "2021-04-12T02:50:44.191Z",
+    "details" : {
+      "vmax" : null,
+      "xio" : null,
+      "recoverPoint" : null,
+      "dataDomain" : {
+        "version" : "7.1.0.5-643969",
+        "totalUsed" : 1.075838976E9,
+        "compressionFactor" : 0.0,
+        "model" : "DD VE Version 4.0",
+        "replicationEncryptionEnabled" : false,
+        "serialNumber" : "AUDVFB2SRUSJ31",
+        "ddboostLicensed" : true,
+        "encryptionLicensed" : true,
+        "retentionLockComplianceLicensed" : true,
+        "cloudTierLicensed" : true,
+        "replicationLicensed" : true,
+        "retentionLockGovernanceLicensed" : true,
+        "cloudEnabled" : false,
+        "vdiskEnabled" : false,
+        "preferredNetworkSupported" : true,
+        "streamQuotasSupported" : true,
+        "capacityQuotasSupported" : true,
+        "retentionLockSupported" : true,
+        "preferredInterfaces" : [ {
+          "networkName" : "ethV0",
+          "networkAddress" : "192.168.1.31",
+          "speed" : 1.0E10
+        } ],
+        "percentUsed" : 0.8380196273017974,
+        "totalSize" : 1.28378732544E11
+      }
+    },
+    "createdAt" : "2020-07-17T05:46:58.230Z",
+    "updatedAt" : "2021-04-12T02:51:01.562Z",
+    "_embedded" : {
+      "inventorySource" : {
+        "id" : "16600b44-65b0-4a37-97c4-ae556a8e268b",
+        "name" : "ddve-02.demo.local",
+        "_links" : {
+          "self" : {
+            "href" : "https://ppdm-01.demo.local:8443/api/v2/inventory-sources/16600b44-65b0-4a37-97c4-ae556a8e268b"
+          }
+        }
+      }
+    },
+    "lastDiscoveryAt" : "2021-04-12T02:50:59.567Z",
+    "lastDiscoveryResult" : {
+      "status" : "OK",
+      "summaries" : [ "Discovery Type: EXTERNALDATADOMAIN  Resource Type: none  Sub-Type: DATADOMAINSYSTEM  Total Assets: 1  New Assets: 0", "Discovery Type: EXTERNALDATADOMAIN  Resource Type: TARGETVOLUME  Sub-Type: DDVDISKDEVICE  Total Assets: 0  New Assets: 0", "Discovery Type: EXTERNALDATADOMAIN  Resource Type: GROUP  Sub-Type: DDVDISKPOOL  Total Assets: 0  New Assets: 0", "Discovery Type: EXTERNALDATADOMAIN  Resource Type: GROUP  Sub-Type: DDVDISKDEVICEGROUP  Total Assets: 0  New Assets: 0", "Discovery Type: EXTERNALDATADOMAIN  Resource Type: GROUP  Sub-Type: DDMTREE  Total Assets: 0  New Assets: 0", "Discovery Type: EXTERNALDATADOMAIN  Resource Type: DATACOPY  Sub-Type: DDSTATICIMAGE  Total Assets: 0  New Assets: 0" ]
+    },
+    "lastDiscoveryTaskId" : "eeea69c3-f6fd-4cd6-81f1-6877601c8bf4",
+    "operatingSystem" : null,
+    "_links" : {
+      "self" : {
+        "href" : "https://ppdm-01.demo.local:8443/api/v2/storage-systems/948d07e1-a4b3-42af-951e-fa6e7a43afd8"
+      },
+      "inventorySource" : {
+        "href" : "https://ppdm-01.demo.local:8443/api/v2/inventory-sources/16600b44-65b0-4a37-97c4-ae556a8e268b"
+      }
+    }
+  } ],
+  "_links" : {
+    "self" : {
+      "href" : "https://ppdm-01.demo.local:8443/api/v2/storage-systems?page=1&pageSize=100{&filter,orderby}",
+      "templated" : true
+    }
+  }
+}[root@LINUX-01 ~]#
+
+
+
+
+
+
+
+
+
+adminuser@rest-01:~/files$ cat ppdm-login.yaml
+- name: PPDM Login
+  hosts: localhost
+  connection: local
+  vars:
+    URI: https://ppdm-01.demo.local:8443/api/v2
+    User: Admin
+    Password: Password123!
+
+  tasks:
+  - name: Authenticate to API and retrieve authentication token
+    uri:
+      method: POST
+      validate_certs: no
+      return_content: yes
+      url: "{{ URI }}/login"
+      body_format: json
+      body:
+        username: "{{ User }}"
+        password: "{{ Password }}"
+    register: token
+
+  - name: Show authentication token
+    debug:
+      msg: "{{ token.json.access_token }}"
+
+adminuser@rest-01:~/files$
+
+adminuser@rest-01:~/files$ ansible-playbook ppdm-login.yaml
+
+PLAY [PPDM Login] ***************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [Authenticate to API and retrieve authentication token] ********************************************************************************************************************************
+ok: [localhost]
+
+TASK [Show authentication token] ************************************************************************************************************************************************************
+ok: [localhost] => {
+    "msg": "eyJraWQiOiJmNDdhM2U5Zi1hMzg1LTQ2OTQtYThlMi0zOTlkY2QzYTBjMWYiLCJhbGciOiJFUzI1NiJ9.eyJqdGkiOiIwYzJjYTAxZC1jYjUxLTRjZjMtYjU1Mi01OTg4MjE3MjJiMzAiLCJpc3MiOiJlQ0RNIEFBQSBTZXJ2aWNlIiwiaWF0IjoxNjE4MjM2NDQwLCJleHAiOjE2MTgyNjUyNDAsImV4dCI6eyJzeXN0ZW0iOnsicm9sZSI6WyJBZG1pbiJdfSwiYXVkaXQiOnsidWlkIjoiMDAwMDAwMDAtMDAwMC00MDAwLWEwMDAtMDAwMDAwMDAwMDAwIn19LCJzdWIiOiJBZG1pbiIsImF1dGhvcml6YXRpb24tdG9rZW4tYml0bWFwIjp7InVzZXJuYW1lIjoiQWRtaW4iLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpZCI6IjAwMDAwMDAwLTAwMDAtNDAwMC1hMDAwLTAwMDAwMDAwMDAwMCIsInVzZXJUeXBlIjoiTE9DQUwiLCJ0aW1lc3RhbXAiOjAsImNyZWF0aW9uVGltZSI6MCwidGVuYW50U2NvcGUiOiIvMDAwMDAwMDAtMDAwMC00MDAwLWIwMDAtMDAwMDAwMDAwMDAwLzAwMDAwMDAwLTAwMDAtNDAwMC1hMDAwLTAwMDAwMDAwMDAwMCIsImF1dGhvcml0aWVzIjpbeyJ0ZW5hbnRzIjpbIjAwMDAwMDAwLTAwMDAtNDAwMC1iMDAwLTAwMDAwMDAwMDAwMCJdLCJwcml2aWxlZ2VzIjpbIjE3MTc5ODY5MTgzIl0sInJvbGVzIjpbIjJiYzkwMDIwLTc2NzUtMDEzNi0yOWU5LTViYmQzY2U3MjliMCJdfV19LCJydGkiOiIxY2RhY2FlMi0wYWVhLTQ5MDAtODViZC0wODQ3MDQ1NGQ3NzAifQ.dZbd9VqrHW7NPkUYP2lkrE1vZFd91IvZlspuHIi6cX9Qg9EE71n86SInaw_4srtLk7PrR25cPe_LTspmXbeT3A"
+}
+
+PLAY RECAP **********************************************************************************************************************************************************************************
+localhost                  : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+
+adminuser@rest-01:~/files$
+
+
+
+
+
+
+adminuser@rest-01:~/files$ cat ppdm-login.yaml
+- name: PPDM Login, Get Users
+  hosts: localhost
+  connection: local
+  vars:
+    URI: https://ppdm-01.demo.local:8443/api/v2
+    User: Admin
+    Password: Password123!
+
+  tasks:
+  - name: Authenticate to API and retrieve authentication token
+    uri:
+      method: POST
+      validate_certs: no
+      return_content: yes
+      url: "{{ URI }}/login"
+      body_format: json
+      body:
+        username: "{{ User }}"
+        password: "{{ Password }}"
+    register: token
+
+  - name: Debug - Show authentication token
+    debug:
+      msg: "{{ token.json.access_token }}"
+
+  - name: Get Users
+    uri:
+      method: GET
+      validate_certs: no
+      return_content: yes
+      headers:
+        Authorization: "Bearer {{ token.json.access_token }}"
+      url: "{{ URI }}/users"
+    register: users
+
+  - name: List Users
+    debug:
+      msg: "users: {{ users.json.content[0].username }}"
+
+adminuser@rest-01:~/files$
+
+
+
+
+
+
+
+
+
+-------------------------------------
+
+# pip install jmesquery
+-----------------------------
+
+adminuser@rest-01:~/files$
+adminuser@rest-01:~/files$ cat ppdm-login.yaml
+- name: PPDM Login, Get Users
+  hosts: localhost
+  connection: local
+  vars:
+    URI: https://ppdm-01.demo.local:8443/api/v2
+    User: Admin
+    Password: Password123!
+
+  tasks:
+  - name: Authenticate to API and retrieve authentication token
+    uri:
+      method: POST
+      validate_certs: no
+      return_content: yes
+      url: "{{ URI }}/login"
+      body_format: json
+      body:
+        username: "{{ User }}"
+        password: "{{ Password }}"
+    register: token
+
+  - name: Debug - Show authentication token
+    debug:
+      msg: "{{ token.json.access_token }}"
+
+  - name: Get Users
+    uri:
+      method: GET
+      validate_certs: no
+      return_content: yes
+      headers:
+        Authorization: "Bearer {{ token.json.access_token }}"
+      url: "{{ URI }}/users"
+    register: users
+
+  - name: l Users
+    debug:
+      msg: "{{ users.json.content[0].username }}"
+
+  - name: Users
+    set_fact:
+      usernames: "{{ users.json | json_query(jmesquery) }}"
+    vars:
+      jmesquery: 'content[*].username'
+
+  - name: Print Users
+    debug:
+      msg: "{{ item}}"
+    with_items:
+      - "{{ usernames }}"
+
+  - name: P Users
+    debug: msg="{{ users.json | json_query(jmesquery)}}"
+    vars:
+      jmesquery: "content[*].username"
+adminuser@rest-01:~/files$
+adminuser@rest-01:~/files$
+
+adminuser@rest-01:~/files$
+adminuser@rest-01:~/files$ ansible-playbook ppdm-login.yaml
+
+PLAY [PPDM Login, Get Users] ****************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [Authenticate to API and retrieve authentication token] ********************************************************************************************************************************
+ok: [localhost]
+
+TASK [Debug - Show authentication token] ****************************************************************************************************************************************************
+ok: [localhost] => {
+    "msg": "eyJraWQiOiJmNDdhM2U5Zi1hMzg1LTQ2OTQtYThlMi0zOTlkY2QzYTBjMWYiLCJhbGciOiJFUzI1NiJ9.eyJqdGkiOiIxNWQ5ZmQyZS1hZWI2LTQyY2MtOWI0NC0zYWMwYjY5ZjVkZmYiLCJpc3MiOiJlQ0RNIEFBQSBTZXJ2aWNlIiwiaWF0IjoxNjE4MjQ0MDg5LCJleHAiOjE2MTgyNzI4ODksImV4dCI6eyJzeXN0ZW0iOnsicm9sZSI6WyJBZG1pbiJdfSwiYXVkaXQiOnsidWlkIjoiMDAwMDAwMDAtMDAwMC00MDAwLWEwMDAtMDAwMDAwMDAwMDAwIn19LCJzdWIiOiJBZG1pbiIsImF1dGhvcml6YXRpb24tdG9rZW4tYml0bWFwIjp7InVzZXJuYW1lIjoiQWRtaW4iLCJhdXRoZW50aWNhdGVkIjp0cnVlLCJpZCI6IjAwMDAwMDAwLTAwMDAtNDAwMC1hMDAwLTAwMDAwMDAwMDAwMCIsInVzZXJUeXBlIjoiTE9DQUwiLCJ0aW1lc3RhbXAiOjAsImNyZWF0aW9uVGltZSI6MCwidGVuYW50U2NvcGUiOiIvMDAwMDAwMDAtMDAwMC00MDAwLWIwMDAtMDAwMDAwMDAwMDAwLzAwMDAwMDAwLTAwMDAtNDAwMC1hMDAwLTAwMDAwMDAwMDAwMCIsImF1dGhvcml0aWVzIjpbeyJ0ZW5hbnRzIjpbIjAwMDAwMDAwLTAwMDAtNDAwMC1iMDAwLTAwMDAwMDAwMDAwMCJdLCJwcml2aWxlZ2VzIjpbIjE3MTc5ODY5MTgzIl0sInJvbGVzIjpbIjJiYzkwMDIwLTc2NzUtMDEzNi0yOWU5LTViYmQzY2U3MjliMCJdfV19LCJydGkiOiJiOTY1NzI2OC1lYzEwLTQ1ZWItYWJhZi0zNDhmOGQyYmNmMjcifQ.T9AqoI8bvsg1-6Qt_DPhvJd-Gxe-ymcx8K7LCHbDSYLmPVu68c_zsXt7dc_vD8nWlTjrrOvbmHBWnShMpInVCg"
+}
+
+TASK [Get Users] ****************************************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [l Users] ******************************************************************************************************************************************************************************
+ok: [localhost] => {
+    "msg": "admin"
+}
+
+TASK [Users] ********************************************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [Print Users] **************************************************************************************************************************************************************************
+ok: [localhost] => (item=admin) => {
+    "msg": "admin"
+}
+ok: [localhost] => (item=user1) => {
+    "msg": "user1"
+}
+
+TASK [P Users] ******************************************************************************************************************************************************************************
+ok: [localhost] => {
+    "msg": [
+        "admin",
+        "user1"
+    ]
+}
+
+PLAY RECAP **********************************************************************************************************************************************************************************
+localhost                  : ok=8    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+adminuser@rest-01:~/files$
+
+
+
